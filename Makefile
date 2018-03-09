@@ -1,11 +1,11 @@
 NAME = avm
-LIST = main Operand
+LIST = main IOperand
 
 SRC = $(addsuffix .cpp, $(addprefix src/, $(LIST)))
 OBJ = $(addsuffix .o, $(addprefix src/, $(LIST)))
 
-CPPFLAGS = ""
-LDFLAGS = ""
+CPPFLAGS =
+LDFLAGS = 
 CFLAGS = -O3 -Wall -Wextra -Werror
 
 all: $(NAME)
