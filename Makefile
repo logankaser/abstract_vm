@@ -1,18 +1,17 @@
 NAME = avm
-LIST = main IOperand
+LIST = main IOperand Operand
 
 SRC = $(addsuffix .cpp, $(addprefix src/, $(LIST)))
 OBJ = $(addsuffix .o, $(addprefix src/, $(LIST)))
 
-CPPFLAGS =
-LDFLAGS = 
-CFLAGS = -O3 -Wall -Wextra -Werror
+CPPFLAGS = -O3 -Wall -Wextra -Werror
+LDFLAGS =
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@echo "\033[32;1mLinking.. \033[0m"
-	@gcc $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(SRC) -o $(NAME)
+	@clang++ $(CPPFLAGS) $(LDFLAGS) $(SRC) -o $(NAME)
 	@echo "\033[32;1m"$(NAME)" created\033[0m"
 
 clean:
