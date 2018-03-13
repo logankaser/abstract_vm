@@ -4,13 +4,15 @@
 #include <string>
 #include <iostream>
 
-enum eOperandType {
+enum class eOperandType : int {
 		Int8 = 1,
 		Int16,
 		Int32,
 		Float,
 		Double
 };
+
+std::ostream& operator<<(std::ostream& os, eOperandType type);
 
 class IOperand {
 	static const IOperand* createInt8(const std::string& value);

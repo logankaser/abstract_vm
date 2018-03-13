@@ -4,7 +4,7 @@ LIST = main IOperand Operand
 SRC = $(addsuffix .cpp, $(addprefix src/, $(LIST)))
 OBJ = $(addsuffix .o, $(addprefix src/, $(LIST)))
 
-CPPFLAGS = -O3 -Wall -Wextra -Werror
+CPPFLAGS = -O3 -Wall -Wextra -Werror -std=c++11
 LDFLAGS =
 
 all: $(NAME)

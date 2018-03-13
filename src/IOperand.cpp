@@ -9,7 +9,7 @@ const IOperand* IOperand::createOperand(eOperandType type, const std::string& va
 		&IOperand::createFloat,
 		&IOperand::createDouble
 	};
-	return (dispatch[type - 1])(value);
+	return (dispatch[(int)type - 1])(value);
 }
 
 const IOperand* IOperand::createInt8(const std::string& value) {
@@ -33,11 +33,24 @@ const IOperand* IOperand::createDouble(const std::string& value) {
 }
 
 std::ostream& operator<<(std::ostream& os, const IOperand& op) {
-	os << op.toString();
-	return os;
+	return (os << op.toString());
 }
 
 std::ostream& operator<<(std::ostream& os, const IOperand* op) {
-	os << op->toString();
-	return os;
+	return (os << op->toString());
+}
+
+std::ostream& operator<<(std::ostream& os, eOperandType type) {
+	switch (type) {
+		case eOperandType::Int8:
+			return (os << "Int8");
+		case eOperandType::Int16:
+			return (os << "Int16");
+		case eOperandType::Int32:
+			return (os << "Int32");
+		case eOperandType::Float:
+			return (os << "Float");
+		case eOperandType::Double:
+			return (os << "Double");
+	}
 }
