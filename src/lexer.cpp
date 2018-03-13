@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   lexer.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lkaser <lkaser@student.42.us.org>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/13 10:02:16 by lkaser            #+#    #+#             */
-/*   Updated: 2018/03/13 10:02:17 by lkaser           ###   ########.fr       */
+/*   Created: 2018/03/13 10:02:04 by lkaser            #+#    #+#             */
+/*   Updated: 2018/03/13 10:19:15 by lkaser           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "IOperand.hpp"
-#include "Operand.hpp"
+#include <fstream>
+#include <string>
 
-int	main(void) {
-	const IOperand* op = IOperand::createOperand(eOperandType::Double, "0.234");
-	const IOperand* op2 = IOperand::createOperand(eOperandType::Int8, "2");
-	const IOperand* result = *op2 + *op;
-	std::cout << result->getType() << std::endl;
-	std::cout << result << std::endl;
-	return (0);
+std::vector<std::string>	lex(char *filename) {
+	std::ifstream source(filename, std::ifstream::in);
+	std::vector<std::string> lines;
+	while(std::geline(source, line))
+		lines.push_back(line);
+	source.close();
 }
