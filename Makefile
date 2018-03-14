@@ -11,12 +11,12 @@
 # **************************************************************************** #
 
 NAME = avm
-LIST = main IOperand Operand
+LIST = main IOperand Operand lexer
 
 SRC = $(addsuffix .cpp, $(addprefix src/, $(LIST)))
 OBJ = $(addsuffix .o, $(addprefix src/, $(LIST)))
 
-CPPFLAGS = -O3 -Wall -Wextra -Werror -std=c++11
+CPPFLAGS = -Ofast -O3 -march=native -Wall -Wextra -Werror -std=c++11
 LDFLAGS =
 
 all: $(NAME)
@@ -24,6 +24,12 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@echo "\033[32;1mLinking.. \033[0m"
 	@clang++ $(CPPFLAGS) $(LDFLAGS) $(SRC) -o $(NAME)
+	@echo "\033[32;1m"$(NAME)" created\033[0m"
+
+
+gcc: $(OBJ)
+	@echo "\033[32;1mLinking.. \033[0m"
+	@g++-7 $(CPPFLAGS) $(LDFLAGS) $(SRC) -o $(NAME)
 	@echo "\033[32;1m"$(NAME)" created\033[0m"
 
 clean:

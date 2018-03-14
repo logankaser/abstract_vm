@@ -65,4 +65,5 @@ std::ostream& operator<<(std::ostream& os, eOperandType type) {
 		case eOperandType::Double:
 			return (os << "Double");
 	}
+	return os;
 }
