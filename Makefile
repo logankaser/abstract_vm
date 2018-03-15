@@ -16,7 +16,7 @@ LIST = main IOperand Operand lexer
 SRC = $(addsuffix .cpp, $(addprefix src/, $(LIST)))
 OBJ = $(addsuffix .o, $(addprefix src/, $(LIST)))
 
-CPPFLAGS = -Ofast -O3 -march=native -Wall -Wextra -Werror -std=c++11
+CPPFLAGS = -std=c++11 -Ofast -O3 -march=native -Wall -Wextra -Werror
 LDFLAGS =
 
 all: $(NAME)

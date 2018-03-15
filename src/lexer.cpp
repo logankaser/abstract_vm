@@ -15,7 +15,6 @@
 #include <string>
 #include <vector>
 #include <regex>
-#include <stdlib.h>
 #include "abstract.hpp"
 
 // Grammer definitions
@@ -26,19 +25,26 @@ static std::regex OP("(pop|dump|add|sub|mul|div|mod|print|exit)");
 static std::regex OP_LIT("(push|assert) (\\w+\\(\\S+\\))");
 static std::regex COMMENT(";([^;]+)");
 
-void lex(const char *filename) {
-	std::ifstream source(filename);
+void lex(char *filename) {
+	std::shared_ptr<std::istream> source;
 	std::string line;
 	std::smatch sm;
 	unsigned line_number = 1;
+	static char* std_in = (char*)"stdin";
 
-	if (!source.is_open()) {
-		std::cout << C_RED "File Error" C_RESET ", unable to open source file `"
-			<< filename << "`"
-		<< std::endl;
+	if (!filename) {
+		filename = std_in;
+		source.reset(&std::cin, [](...){});
+	}
+	else
+		source.reset(new std::ifstream(filename));
+	if (!source->good()) {
+		std::cout
+			<< C_RED "File Error" C_RESET ",\n unable to open source file `"
+			<< filename << "`" << std::endl;
 		exit(1);
 	}
-	while(std::getline(source, line)) {
+	while(std::getline(*source, line)) {
 		if (regex_match(line, sm, COMMENT)) {
 			std::cout << sm[1] << std::endl;
 		}
@@ -52,9 +58,10 @@ void lex(const char *filename) {
 			break;
 		}
 		else {
-			std::cout << C_RED "Syntax Error" C_RESET ",\n "
-				<< filename << ':' << line_number << ": " << line
-			<< std::endl;
+			std::cout
+				<< C_RED "Syntax Error" C_RESET ",\n "
+				<< filename << ':' << line_number << ": "
+				<< line << std::endl;
 		}
 		++line_number;
 	}
