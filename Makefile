@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = avm
-LIST = main IOperand Operand lexer
+LIST = main IOperand Operand Expression parse
 
 SRC = $(addsuffix .cpp, $(addprefix src/, $(LIST)))
 OBJ = $(addsuffix .o, $(addprefix src/, $(LIST)))

@@ -15,7 +15,7 @@
 #include "abstract.hpp"
 
 int	main(int argc, char **argv) {
-	lex(argv[1]);
+	parse(argv[1]);
 	(void)argc;
 	return (0);
 }
