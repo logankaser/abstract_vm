@@ -19,3 +19,10 @@ int	main(int argc, char **argv) {
 	(void)argc;
 	return (0);
 }
+
+/*
+std::vector<std::string>::iterator line;
+for (line = lines.begin();line != lines.end();++line) {
+	std::cout << *line << std::endl;
+}
+*/

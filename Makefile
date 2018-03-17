@@ -16,7 +16,7 @@ LIST = main IOperand Operand Expression parse
 SRC = $(addsuffix .cpp, $(addprefix src/, $(LIST)))
 OBJ = $(addsuffix .o, $(addprefix src/, $(LIST)))
 
-CPPFLAGS = -std=c++11 -Ofast -O3 -march=native -Wall -Wextra -Werror
+CPPFLAGS = -std=c++11 -O3 -march=native -Wall -Wextra -Werror
 LDFLAGS =
 
 all: $(NAME)
