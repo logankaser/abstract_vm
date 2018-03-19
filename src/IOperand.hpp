@@ -27,13 +27,13 @@ enum class eOperandType : int {
 std::ostream& operator<<(std::ostream& os, eOperandType type);
 
 class IOperand {
-	static const IOperand* createInt8(const std::string& value);
-	static const IOperand* createInt16(const std::string& value);
-	static const IOperand* createInt32(const std::string& value);
-	static const IOperand* createFloat(const std::string& value);
-	static const IOperand* createDouble(const std::string& value);
+	static IOperand* createInt8(const std::string& value);
+	static IOperand* createInt16(const std::string& value);
+	static IOperand* createInt32(const std::string& value);
+	static IOperand* createFloat(const std::string& value);
+	static IOperand* createDouble(const std::string& value);
 public:
-	static const IOperand* createOperand(eOperandType type, const std::string& value);
+	static IOperand* createOperand(eOperandType type, const std::string& value);
 	virtual int getPrecision(void) const = 0;
 	virtual eOperandType getType(void) const = 0;
 	virtual const IOperand* operator+(const IOperand &rhs) const = 0;
