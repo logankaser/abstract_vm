@@ -51,9 +51,8 @@ Expression* make_expression(std::string ins) {
 		return new Expression(ExType::exit, NULL);
 }
 
-
 Expression* make_expression_and_literal(std::string ins, std::string val, unsigned* errors) {
-	IOperand* lit = NULL;
+	const IOperand* lit = NULL;
 	std::smatch sm;
 	if (regex_match(val, sm, INT)) {
 		if (sm[1] == "int8")

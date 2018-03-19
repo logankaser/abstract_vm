@@ -13,8 +13,8 @@
 #include "IOperand.hpp"
 #include "Operand.hpp"
 
-IOperand* IOperand::createOperand(eOperandType type, const std::string& value) {
-	static IOperand* (*dispatch[])(const std::string& value) = {
+const IOperand* IOperand::createOperand(eOperandType type, const std::string& value) {
+	static const IOperand* (*dispatch[])(const std::string& value) = {
 		&IOperand::createInt8,
 		&IOperand::createInt16,
 		&IOperand::createInt32,
@@ -24,23 +24,23 @@ IOperand* IOperand::createOperand(eOperandType type, const std::string& value) {
 	return (dispatch[(int)type - 1])(value);
 }
 
-IOperand* IOperand::createInt8(const std::string& value) {
+const IOperand* IOperand::createInt8(const std::string& value) {
 	return new Operand<int8_t>(std::stoi(value));
 }
 
-IOperand* IOperand::createInt16(const std::string& value) {
+const IOperand* IOperand::createInt16(const std::string& value) {
 	return new Operand<int16_t>(std::stoi(value));
 }
 
-IOperand* IOperand::createInt32(const std::string& value) {
+const IOperand* IOperand::createInt32(const std::string& value) {
 	return new Operand<int32_t>(std::stoi(value));
 }
 
-IOperand* IOperand::createFloat(const std::string& value) {
+const IOperand* IOperand::createFloat(const std::string& value) {
 	return new Operand<float>(std::stof(value));
 }
 
-IOperand* IOperand::createDouble(const std::string& value) {
+const IOperand* IOperand::createDouble(const std::string& value) {
 	return new Operand<double>(std::stod(value));
 }
 

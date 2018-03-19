@@ -21,7 +21,7 @@ public:
 	Expression(void);
 	const ExType _type;
 	const IOperand* _operand;
-	Expression(ExType type, IOperand* operand);
+	Expression(ExType type, const IOperand* operand);
 	~Expression(void);
 };
 
