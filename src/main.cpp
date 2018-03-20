@@ -13,7 +13,6 @@
 #include "IOperand.hpp"
 #include "Operand.hpp"
 #include "abstract.hpp"
-#include <stack>
 
 int	main(int argc, char **argv) {
 	if (argc > 2) {
@@ -21,12 +20,16 @@ int	main(int argc, char **argv) {
 			<< C_RED "Argument Error" C_RESET ",\n too many arguments" << std::endl;
 	}
 	else {
-		std::stack<IOperand*,std::vector<IOperand*>> stack;
+		std::vector<const IOperand*> stack;
 		std::vector<const Expression*> codes = parse(argc == 2 ? argv[1] : NULL);
 		std::vector<const Expression*>::const_iterator code;
 		for (code = codes.begin();code != codes.end();++code) {
 			std::cout << *code << std::endl;
+			if ((*code)->type == ExType::push) {
+				stack.push_back((*code)->operand);
+			}
 		}
+		std::cout << stack.back() << std::endl;
 	}
 	return (0);
 }

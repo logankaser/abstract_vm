@@ -1,16 +1,16 @@
 #include "Expression.hpp"
 #include "IOperand.hpp"
 
-Expression::Expression(void) : _type(ExType::exit), _operand(NULL) {};
+Expression::Expression(void) : type(ExType::exit), operand(NULL) {};
 Expression::~Expression(void) {}
-Expression::Expression(ExType t, const IOperand* op) : _type(t), _operand(op) {};
+Expression::Expression(ExType t, const IOperand* op) : type(t), operand(op) {};
 
 std::ostream& operator<<(std::ostream& os, const Expression* ex) {
-	switch (ex->_type) {
+	switch (ex->type) {
 		case ExType::push:
-			return (os << "push: " << ex->_operand);
+			return (os << "push: " << ex->operand);
 		case ExType::assert:
-			return (os << "assert: " << ex->_operand);
+			return (os << "assert: " << ex->operand);
 		case ExType::pop:
 			return (os << "pop");
 		case ExType::dump:

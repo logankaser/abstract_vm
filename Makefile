@@ -13,24 +13,26 @@
 NAME = avm
 LIST = main IOperand Operand Expression parse
 
+SRC_DIR = src
+OBJ_DIR = obj
 SRC = $(addsuffix .cpp, $(addprefix src/, $(LIST)))
-OBJ = $(addsuffix .o, $(addprefix src/, $(LIST)))
+OBJ = $(addsuffix .o, $(addprefix $(OBJ_DIR)/, $(LIST)))
 
 CPPFLAGS = -std=c++11 -O3 -march=native -Wall -Wextra -Werror
 LDFLAGS =
 
-all: $(NAME)
+all: $(OBJ_DIR) $(NAME)
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ)
 	@echo "\033[32;1mLinking.. \033[0m"
-	@clang++ $(CPPFLAGS) $(LDFLAGS) $(SRC) -o $(NAME)
+	@clang++ $(LDFLAGS) -o $@ $^
 	@echo "\033[32;1m"$(NAME)" created\033[0m"
 
-
-gcc: $(OBJ)
-	@echo "\033[32;1mLinking.. \033[0m"
-	@g++-7 $(CPPFLAGS) $(LDFLAGS) $(SRC) -o $(NAME)
-	@echo "\033[32;1m"$(NAME)" created\033[0m"
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	clang++ $(CPPFLAGS) -c -o $@ $<
 
 clean:
 	@echo "\033[31;1mCleaning..\033[0m"
@@ -38,9 +40,9 @@ clean:
 
 fclean:
 	@echo "\033[31;1mFull Cleaning..\033[0m"
-	@rm -f $(OBJ)
+	@rm -rf $(OBJ_DIR)
 	@rm -f $(NAME)
 
 re:	fclean all
 
-.PHONY: clean fclean all re
+.PHONY: clean fclean all re directories

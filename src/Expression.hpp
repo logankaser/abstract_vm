@@ -19,8 +19,8 @@ enum class ExType : int {
 class Expression {
 public:
 	Expression(void);
-	const ExType _type;
-	const IOperand* _operand;
+	const ExType type;
+	const IOperand* operand;
 	Expression(ExType type, const IOperand* operand);
 	~Expression(void);
 	friend std::ostream& operator<<(std::ostream& os, const Expression& ex);
