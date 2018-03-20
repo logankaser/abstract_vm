@@ -4,7 +4,7 @@
 #include <vector>
 #include "Expression.hpp"
 
-std::vector<Expression*> parse(char* filename);
+std::vector<const Expression*> parse(char* filename);
 
 #define C_RED "\x1b[31m"
 #define C_GREEN "\x1b[32m"

@@ -30,7 +30,7 @@ void open_stream(char** filename, std::shared_ptr<std::istream>* source) {
 	}
 }
 
-Expression* make_expression(std::string ins) {
+const Expression* make_expression(std::string ins) {
 	if (ins == "pop")
 		return new Expression(ExType::pop, NULL);
 	else if (ins == "dump")
@@ -51,7 +51,7 @@ Expression* make_expression(std::string ins) {
 		return new Expression(ExType::exit, NULL);
 }
 
-Expression* make_expression_and_literal(std::string ins, std::string val, unsigned* errors) {
+const Expression* make_expression_and_literal(std::string ins, std::string val, unsigned* errors) {
 	const IOperand* lit = NULL;
 	std::smatch sm;
 	if (regex_match(val, sm, INT)) {
@@ -80,11 +80,11 @@ Expression* make_expression_and_literal(std::string ins, std::string val, unsign
 	return new Expression(ExType::assert, lit);
 }
 
-std::vector<Expression*> parse(char* filename) {
+std::vector<const Expression*> parse(char* filename) {
 	std::shared_ptr<std::istream> source;
 	std::string line;
 	std::smatch sm;
-	std::vector<Expression*> exps;
+	std::vector<const Expression*> exps;
 	unsigned line_number = 1;
 	unsigned errors = 0;
 
