@@ -24,7 +24,7 @@ LDFLAGS =
 all: $(OBJ_DIR) $(NAME)
 
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ)
 	@echo "\033[32;1mLinking.. \033[0m"
