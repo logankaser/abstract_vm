@@ -36,3 +36,7 @@ std::ostream& operator<<(std::ostream& os, const Expression* ex) {
 std::ostream& operator<<(std::ostream& os, const Expression& ex) {
 	return os << &ex;
 }
+
+bool Expression::operator==(const Expression rhs) const {
+	return type == rhs.type;
+}

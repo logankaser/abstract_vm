@@ -25,6 +25,7 @@ public:
 	~Expression(void);
 	friend std::ostream& operator<<(std::ostream& os, const Expression& ex);
 	friend std::ostream& operator<<(std::ostream& os, const Expression* ex);
+	bool operator==(const Expression rhs) const;
 };
 
 #endif

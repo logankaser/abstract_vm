@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = avm
-LIST = main IOperand Operand Expression parse
+LIST = main IOperand Operand Expression lex parse
 
 SRC_DIR = src
 OBJ_DIR = obj
