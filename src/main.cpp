@@ -50,7 +50,7 @@ int	main(int argc, char **argv) {
 						exit(0);break;
 				}
 			}
-			catch(std::exception& e) {
+			catch(const std::exception& e) {
 				std::cout
 					<< C_RED "Runtime Error" C_RESET ",\n "
 					<< i << ": "

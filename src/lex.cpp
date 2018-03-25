@@ -54,25 +54,27 @@ const Expression* make_expression(std::string ins) {
 const Expression* make_expression_and_literal(std::string ins, std::string val, unsigned* errors) {
 	const IOperand* lit = NULL;
 	std::smatch sm;
-	if (regex_match(val, sm, VAL_INT)) {
-		if (sm[1] == "int8")
-			lit = IOperand::createOperand(eOperandType::Int8, sm[2]);
-		else if (sm[1] == "int16")
-			lit = IOperand::createOperand(eOperandType::Int16, sm[2]);
-		else
-			lit = IOperand::createOperand(eOperandType::Int32, sm[2]);
+	try {
+		if (regex_match(val, sm, VAL_INT)) {
+			if (sm[1] == "int8")
+				lit = IOperand::createOperand(eOperandType::Int8, sm[2]);
+			else if (sm[1] == "int16")
+				lit = IOperand::createOperand(eOperandType::Int16, sm[2]);
+			else
+				lit = IOperand::createOperand(eOperandType::Int32, sm[2]);
+		}
+		else if (regex_match(val, sm, VAL_FLOAT)) {
+			if (sm[1] == "float")
+				lit = IOperand::createOperand(eOperandType::Float, sm[2]);
+			else
+				lit = IOperand::createOperand(eOperandType::Double, sm[2]);
+		}
 	}
-	else if (regex_match(val, sm, VAL_FLOAT)) {
-		if (sm[1] == "float")
-			lit = IOperand::createOperand(eOperandType::Float, sm[2]);
-		else
-			lit = IOperand::createOperand(eOperandType::Double, sm[2]);
-	}
-	if (lit == NULL) {
+	catch(const std::exception& e) {
 		*errors += 1;
 		std::cout
-			<< C_RED "Value Error" C_RESET ",\n invalid literal value `"
-			<< val << "`" << std::endl;
+			<< C_RED "Value Error" C_RESET ",\n error constructing value, `"
+			<< e.what() << "`" << std::endl;
 		return new Expression();
 	}
 	if (ins == "push")

@@ -12,6 +12,7 @@
 
 #include "IOperand.hpp"
 #include "Operand.hpp"
+#include "Exceptions.hpp"
 
 const IOperand* IOperand::createOperand(eOperandType type, const std::string& value) {
 	static const IOperand* (*dispatch[])(const std::string& value) = {
@@ -25,15 +26,30 @@ const IOperand* IOperand::createOperand(eOperandType type, const std::string& va
 }
 
 const IOperand* IOperand::createInt8(const std::string& value) {
-	return new Operand<int8_t>(std::stoi(value));
+	long long l = std::stoll(value);
+	if (l < -128)
+		throw abstract::OperandUnderflow();
+	if (l > 127)
+		throw abstract::OperandOverflow();
+	return new Operand<int8_t>(l);
 }
 
 const IOperand* IOperand::createInt16(const std::string& value) {
-	return new Operand<int16_t>(std::stoi(value));
+	long long l = std::stoll(value);
+	if (l < -32768)
+		throw abstract::OperandUnderflow();
+	if (l > 32767)
+		throw abstract::OperandOverflow();
+	return new Operand<int16_t>(l);
 }
 
 const IOperand* IOperand::createInt32(const std::string& value) {
-	return new Operand<int32_t>(std::stoi(value));
+	long long l = std::stoll(value);
+	if (l < -2147483647)
+		throw abstract::OperandUnderflow();
+	if (l > 2147483647)
+		throw abstract::OperandOverflow();
+	return new Operand<int32_t>(l);
 }
 
 const IOperand* IOperand::createFloat(const std::string& value) {
