@@ -23,4 +23,7 @@ namespace abstract {
 	struct TooFewOperands : public std::runtime_error {
 		TooFewOperands(void) : std::runtime_error("Stack has too few operands for the operation") {};
 	};
+	struct ValueError : public std::range_error {
+		ValueError(std::string s) : std::range_error(s) {};
+	};
 }

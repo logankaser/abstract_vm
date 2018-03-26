@@ -81,8 +81,11 @@ const Expression* make_expression_and_literal(std::string ins, std::string val, 
 	}
 	if (ins == "push")
 		return new Expression(ExType::push, lit);
-	if (ins == "loop")
+	if (ins == "loop") {
+		if (lit->getType() != eOperandType::Int8)
+			throw abstract::ValueError("Loop with unsupported type (must be int8)");
 		return new Expression(ExType::loop, lit);
+	}
 	return new Expression(ExType::assert, lit);
 }
 

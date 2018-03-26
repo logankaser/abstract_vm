@@ -95,7 +95,7 @@ void	mod(std::vector<const IOperand*>& stack) {
 
 void	loop(std::vector<const IOperand*>& stack, const Expression* ex, unsigned* ins) {
 	if (std::stod(stack.back()->toString()) > 0.0) {
-		*ins = std::stol(ex->operand->toString()) - 2;
+		*ins = std::stoi(ex->operand->toString()) - 2;
 	}
 }
 
