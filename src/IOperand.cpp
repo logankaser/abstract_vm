@@ -26,17 +26,29 @@ const IOperand* IOperand::createOperand(eOperandType type, const std::string& va
 }
 
 const IOperand* IOperand::createInt8(const std::string& value) {
-	long long l = std::stoll(value);
-	if (l < -128)
+	int i = 0;
+	try {
+		i = std::stoi(value);
+	}
+	catch(const std::exception& e) {
+		i = value[0] == '-' ? -128 : 128;
+	}
+	if (i < -127)
 		throw abstract::OperandUnderflow();
-	if (l > 127)
+	if (i > 127)
 		throw abstract::OperandOverflow();
-	return new Operand<int8_t>(l);
+	return new Operand<int8_t>(i);
 }
 
 const IOperand* IOperand::createInt16(const std::string& value) {
-	long long l = std::stoll(value);
-	if (l < -32768)
+	long l = 0;
+	try {
+		l = std::stol(value);
+	}
+	catch(const std::exception& e) {
+		l = value[0] == '-' ? -32768 : 32768;
+	}
+	if (l < -32767)
 		throw abstract::OperandUnderflow();
 	if (l > 32767)
 		throw abstract::OperandOverflow();
@@ -44,7 +56,13 @@ const IOperand* IOperand::createInt16(const std::string& value) {
 }
 
 const IOperand* IOperand::createInt32(const std::string& value) {
-	long long l = std::stoll(value);
+	long long l = 0;
+	try {
+		l = std::stoll(value);
+	}
+	catch(const std::exception& e) {
+		l = value[0] == '-' ? -2147483648 : 2147483648;
+	}
 	if (l < -2147483647)
 		throw abstract::OperandUnderflow();
 	if (l > 2147483647)
@@ -53,11 +71,29 @@ const IOperand* IOperand::createInt32(const std::string& value) {
 }
 
 const IOperand* IOperand::createFloat(const std::string& value) {
-	return new Operand<float>(std::stof(value));
+	float f = 0.0f;
+	try {
+		f = std::stof(value);
+	}
+	catch(const std::exception& e) {
+		if (value[0] == '-')
+			throw abstract::OperandUnderflow();
+		throw abstract::OperandOverflow();
+	}
+	return new Operand<float>(f);
 }
 
 const IOperand* IOperand::createDouble(const std::string& value) {
-	return new Operand<double>(std::stod(value));
+	double d = 0.0;
+	try {
+		d = std::stod(value);
+	}
+	catch(const std::exception& e) {
+		if (value[0] == '-')
+			throw abstract::OperandUnderflow();
+		throw abstract::OperandOverflow();
+	}
+	return new Operand<double>(d);
 }
 
 std::ostream& operator<<(std::ostream& os, const IOperand& op) {

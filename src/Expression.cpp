@@ -3,6 +3,7 @@
 
 Expression::Expression(void) : type(ExType::exit), operand(NULL) {};
 Expression::~Expression(void) {}
+Expression::Expression(ExType t) : type(t), operand(NULL) {};
 Expression::Expression(ExType t, const IOperand* op) : type(t), operand(op) {};
 
 std::ostream& operator<<(std::ostream& os, const Expression* ex) {
@@ -27,6 +28,8 @@ std::ostream& operator<<(std::ostream& os, const Expression* ex) {
 			return (os << "mod");
 		case ExType::print:
 			return (os << "print");
+		case ExType::loop:
+			return (os << "loop");
 		case ExType::exit:
 			return (os << "exit");
 	}

@@ -9,11 +9,11 @@
 #define C_CYAN "\x1B[36m"
 #define C_RESET "\x1b[0m"
 
-std::vector<const Expression*> lex(char* filename);
+std::vector<const Expression*> lex(const char* filename);
 
 namespace parse {
-	void 	push(const Expression* ex, std::vector<const IOperand*>& stack);
-	void 	assert(const Expression* ex, std::vector<const IOperand*>& stack);
+	void 	push(std::vector<const IOperand*>& stack, const Expression* ex);
+	void 	assert(std::vector<const IOperand*>& stack, const Expression* ex);
 	void 	pop(std::vector<const IOperand*>& stack);
 	void 	dump(std::vector<const IOperand*>& stack);
 	void	print(std::vector<const IOperand*>& stack);
@@ -22,6 +22,7 @@ namespace parse {
 	void	mul(std::vector<const IOperand*>& stack);
 	void	div(std::vector<const IOperand*>& stack);
 	void	mod(std::vector<const IOperand*>& stack);
+	void	loop(std::vector<const IOperand*>& stack, const Expression* ex, unsigned* ins);
 }
 
 #endif

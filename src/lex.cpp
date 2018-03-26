@@ -4,20 +4,21 @@
 #include <regex>
 #include <algorithm>
 #include "Expression.hpp"
+#include "Exceptions.hpp"
 #include "abstract.hpp"
 
 // Grammer definitions
 
 static const std::regex VAL_INT("(int8|int16|int32)\\((-?[\\d]+)\\)");
 static const std::regex VAL_FLOAT("(float|double)\\((-?[\\d]+.[\\d]+)\\)");
-static const std::regex EXP("(pop|dump|add|sub|mul|div|mod|print|exit)(?: *;.+)?");
-static const std::regex EXP_LIT("(push|assert) (\\w+\\(\\S+\\))(?: *;.+)?");
+static const std::regex EXP("(pop|dump|add|sub|mul|div|mod|print|exit)(?: *;.*)?");
+static const std::regex EXP_LIT("(push|assert|loop) (\\w+\\(\\S+\\))(?: *;.*)?");
 static const std::regex COMMENT(";([^;]+)");
 
-void open_stream(char** filename, std::shared_ptr<std::istream>* source) {
-	static char* std_in = (char*)"stdin";
+void open_stream(const char** filename, std::shared_ptr<std::istream>* source) {
+	static std::string std_in = "stdin";
 	if (!*filename) {
-		*filename = std_in;
+		*filename = std_in.c_str();
 		source->reset(&std::cin, [](...){});
 	}
 	else
@@ -32,23 +33,23 @@ void open_stream(char** filename, std::shared_ptr<std::istream>* source) {
 
 const Expression* make_expression(std::string ins) {
 	if (ins == "pop")
-		return new Expression(ExType::pop, NULL);
+		return new Expression(ExType::pop);
 	else if (ins == "dump")
-		return new Expression(ExType::dump, NULL);
+		return new Expression(ExType::dump);
 	else if (ins == "add")
-		return new Expression(ExType::add, NULL);
+		return new Expression(ExType::add);
 	else if (ins == "sub")
-		return new Expression(ExType::sub, NULL);
+		return new Expression(ExType::sub);
 	else if (ins == "mul")
-		return new Expression(ExType::mul, NULL);
+		return new Expression(ExType::mul);
 	else if (ins == "div")
-		return new Expression(ExType::div, NULL);
+		return new Expression(ExType::div);
 	else if (ins == "mod")
-		return new Expression(ExType::mod, NULL);
+		return new Expression(ExType::mod);
 	else if (ins == "print")
-		return new Expression(ExType::print, NULL);
+		return new Expression(ExType::print);
 	else
-		return new Expression(ExType::exit, NULL);
+		return new Expression(ExType::exit);
 }
 
 const Expression* make_expression_and_literal(std::string ins, std::string val, unsigned* errors) {
@@ -73,16 +74,19 @@ const Expression* make_expression_and_literal(std::string ins, std::string val, 
 	catch(const std::exception& e) {
 		*errors += 1;
 		std::cout
-			<< C_RED "Value Error" C_RESET ",\n error constructing value, `"
+			<< C_RED "Value Error" C_RESET ",\n error constructing "
+			<< sm[1] << " value, `"
 			<< e.what() << "`" << std::endl;
-		return new Expression();
+		return NULL;
 	}
 	if (ins == "push")
 		return new Expression(ExType::push, lit);
+	if (ins == "loop")
+		return new Expression(ExType::loop, lit);
 	return new Expression(ExType::assert, lit);
 }
 
-std::vector<const Expression*> lex(char* filename) {
+std::vector<const Expression*> lex(const char* filename) {
 	std::shared_ptr<std::istream> source;
 	std::string line;
 	std::smatch sm;
@@ -92,32 +96,41 @@ std::vector<const Expression*> lex(char* filename) {
 
 	open_stream(&filename, &source);
 	while(std::getline(*source, line)) {
-		if (line == "")
-			continue;
-		if (regex_match(line, sm, COMMENT)) {
-			std::cout << C_CYAN << sm[1] << C_RESET << std::endl;
+		try {
+			if (line == "")
+				continue;
+			if (regex_match(line, sm, COMMENT)) {
+				std::cout << C_CYAN << sm[1] << C_RESET << std::endl;
+			}
+			else if (regex_match(line, sm, EXP)) {
+				exps.push_back(make_expression(sm[1]));
+			}
+			else if (regex_match(line, sm, EXP_LIT)) {
+				exps.push_back(make_expression_and_literal(sm[1], sm[2], &errors));
+			}
+			else if (line == ";;") {
+				break;
+			}
+			else {
+				throw abstract::UnknownInstruction();
+			}
 		}
-		else if (regex_match(line, sm, EXP)) {
-			exps.push_back(make_expression(sm[1]));
-		}
-		else if (regex_match(line, sm, EXP_LIT)) {
-			exps.push_back(make_expression_and_literal(sm[1], sm[2], &errors));
-		}
-		else if (line == ";;") {
-			break;
-		}
-		else {
+		catch(const std::exception& e) {
 			++errors;
 			std::cout
 				<< C_RED "Syntax Error" C_RESET ",\n "
 				<< filename << ':' << line_number << ": "
-				<< line << std::endl;
+				<< line << std::endl
+				<< " `" << e.what() << '`' << std::endl;
 		}
 		++line_number;
 	}
 	const Expression ex(ExType::exit, NULL);
 	if(std::find_if(exps.begin(), exps.end(),
-	[&ex](const Expression* exp) {return *exp == ex;}) == exps.end()) {
+		[&ex](const Expression* exp) {
+			return exp == NULL ? false : *exp == ex;
+		}
+	) == exps.end()) {
 		std::cout << C_RED "Logic Error" C_RESET ",\n"
 			<< " missing exit instruction" << std::endl;
 		exit(1);

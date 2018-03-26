@@ -27,9 +27,9 @@ int	main(int argc, char **argv) {
 			try {
 				switch (codes[i]->type) {
 					case ExType::push:
-						parse::push(codes[i], stack);break;
+						parse::push(stack, codes[i]);break;
 					case ExType::assert:
-						parse::assert(codes[i], stack);break;
+						parse::assert(stack, codes[i]);break;
 					case ExType::pop:
 						parse::pop(stack);break;
 					case ExType::dump:
@@ -46,14 +46,16 @@ int	main(int argc, char **argv) {
 						parse::mod(stack);break;
 					case ExType::print:
 						parse::print(stack);break;
+					case ExType::loop:
+						parse::loop(stack, codes[i], &i);break;
 					case ExType::exit:
-						exit(0);break;
+						exit(0);
 				}
 			}
 			catch(const std::exception& e) {
 				std::cout
 					<< C_RED "Runtime Error" C_RESET ",\n "
-					<< i << ": "
+					<< i + 1 << ": "
 					<< e.what() << std::endl;
 				exit(1);
 			}

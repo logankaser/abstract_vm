@@ -20,9 +20,6 @@ namespace abstract {
 	struct DivisionByZero : public std::range_error {
 		DivisionByZero(void) : std::range_error("Division by zero") {};
 	};
-	struct MissingExit : public std::runtime_error {
-		MissingExit(void) : std::runtime_error("Missing exit instruction") {};
-	};
 	struct TooFewOperands : public std::runtime_error {
 		TooFewOperands(void) : std::runtime_error("Stack has too few operands for the operation") {};
 	};
