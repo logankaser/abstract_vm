@@ -65,6 +65,7 @@ void	mul(std::vector<const IOperand*>& stack) {
 	const IOperand& l = *stack.back();
 	stack.pop_back();
 	stack.push_back(l * r);
+	std::cout << stack.back()->getType() << std::endl;
 }
 
 
@@ -73,7 +74,7 @@ void	div(std::vector<const IOperand*>& stack) {
 		throw abstract::TooFewOperands();
 	const IOperand& r = *stack.back();
 	stack.pop_back();
-	if (r.toString() == "0")
+	if (std::stod(r.toString()) == 0.0)
 		throw abstract::DivisionByZero();
 	const IOperand& l = *stack.back();
 	stack.pop_back();
@@ -86,7 +87,7 @@ void	mod(std::vector<const IOperand*>& stack) {
 		throw abstract::TooFewOperands();
 	const IOperand& r = *stack.back();
 	stack.pop_back();
-	if (r.toString() == "0")
+	if (std::stod(r.toString()) == 0.0)
 		throw abstract::DivisionByZero();
 	const IOperand& l = *stack.back();
 	stack.pop_back();

@@ -70,6 +70,8 @@ const Expression* make_expression_and_literal(std::string ins, std::string val, 
 			else
 				lit = IOperand::createOperand(eOperandType::Double, sm[2]);
 		}
+		else
+			throw abstract::ValueError(val);
 	}
 	catch(const std::exception& e) {
 		*errors += 1;
@@ -138,7 +140,7 @@ std::vector<const Expression*> lex(const char* filename) {
 			<< " missing exit instruction" << std::endl;
 		exit(1);
 	}
-	if (errors) {
+	if (errors > 0) {
 		std::cout << "-------------------------------------\n"
 			<< errors << C_RED " Errors" C_RESET << std::endl;
 		exit(1);
