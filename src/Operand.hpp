@@ -72,7 +72,9 @@ template<class T> const IOperand* Operand<T>::operator%(const IOperand& rhs) con
 template<class T> bool Operand<T>::operator==(const IOperand* rhs) const {
 	if ((int)getType() != (int)rhs->getType())
 		return false;
-	return this->_value == std::stod(rhs->toString());
+	if (rhs->getType() == eOperandType::Float)
+		return _value == std::stof(rhs->toString());
+	return _value == std::stod(rhs->toString());
 }
 
 template<class T> bool Operand<T>::operator!=(const IOperand* rhs) const {
