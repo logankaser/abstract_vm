@@ -1,5 +1,11 @@
 ## Abstract VM - Simple typed virtual machine in C++
 
+Implements five number types: three integer types or 1, 2, and 4 byte widths, and two floating point types of
+4 and 8 byte widths.
+Features a simple precision promotion model, if an `float` and a `double` are added the result will be a `double`.
+Implemented in C++11 making use of..  
+ *class templates*, *class specialization*, *abstract virtual classes* and *custom exceptions*.
+
 ### Grammar
 Type           | Regular expression
 ---------------|------------
